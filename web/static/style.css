@@ -1,0 +1,55 @@
+/* Main layout */
+:root{
+	--bg:#f4f6fb;
+	--card:#ffffff;
+	--muted:#6c757d;
+	--accent:#0056b3;
+	--border:#e6e9ef;
+}
+html,body{height:100%;}
+body{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	background:var(--bg);
+	color:#222;
+	margin:0;
+	padding:1.25rem;
+}
+
+.container{
+	max-width:1200px;
+	margin:0 auto;
+	background:var(--card);
+	padding:1.25rem;
+	border-radius:8px;
+	box-shadow:0 6px 18px rgba(20,30,50,0.06);
+}
+
+h1,h2{color:var(--accent);margin:0 0 0.5rem 0}
+
+/* Chart */
+.chart{display:block}
+.chart img{max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto}
+
+/* Table container for horizontal scroll on small screens */
+.table-container{overflow-x:auto}
+
+/* Pandas generated table styling: target class 'data' used in app.py */
+table.data{width:100%;border-collapse:collapse;margin-top:0.5rem}
+table.data th, table.data td{border:1px solid var(--border);padding:0.5rem 0.75rem;text-align:left;vertical-align:top}
+table.data th{background:var(--accent);color:#fff;font-weight:600}
+table.data tr:nth-child(even){background:#fbfdff}
+
+/* Small helpers */
+.text-muted{color:var(--muted)}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+	body{padding:0.5rem}
+	.container{padding:0.75rem}
+	table.data th, table.data td{padding:0.45rem}
+}
+
+/* Optional: smaller footprint chart on very small devices */
+@media (max-width:380px){
+	.chart img{width:100%;height:auto}
+}

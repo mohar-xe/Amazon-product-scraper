@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Product Analytics Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --notebook-beige: #f5e6d3;
+        --cream: #faf6f0;
+        --brown: #8b6f47;
+        --dark-brown: #5d4e37;
+        --rust: #b8860b;
+        --light-brown: #d4a574;
+        --paper: #fefbf3;
+        --ink: #3e2723;
+        --shadow: rgba(93, 78, 55, 0.15);
+      }
+      
+      body {
+        background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b7 50%, #d4c5a9 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Georgia', 'Times New Roman', serif;
+      }
+      
+      .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .header-card {
+        background: linear-gradient(135deg, #d4a574 0%, #b8860b 100%);
+        color: var(--paper);
+        border-radius: 10px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 20px var(--shadow);
+        border: 3px solid var(--brown);
+      }
+      
+      .header-card h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      }
+      
+      .stats-row {
+        margin-bottom: 2rem;
+      }
+      
+      .stat-card {
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px var(--shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 2px solid var(--light-brown);
+        border-left: 5px solid;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px var(--shadow);
+      }
+      
+      .stat-card.primary { border-left-color: var(--brown); }
+      .stat-card.secondary { border-left-color: var(--rust); }
+      .stat-card.danger { border-left-color: #a0522d; }
+      .stat-card.warning { border-left-color: #cd853f; }
+      
+      .stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--dark-brown);
+      }
+      
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+        color: var(--ink);
+      }
+      
+      .stat-label {
+        color: var(--brown);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      
+      .chart-card {
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px var(--shadow);
+        border: 2px solid var(--light-brown);
+      }
+      
+      .chart-card h3 {
+        color: var(--ink);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        border-bottom: 2px solid var(--light-brown);
+        padding-bottom: 0.5rem;
+      }
+      
+      .chart-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid var(--light-brown);
+      }
+      
+      .table-card {
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px var(--shadow);
+        border: 2px solid var(--light-brown);
+        overflow-x: auto;
+      }
+      
+      table.data {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      
+      table.data th {
+        background: linear-gradient(135deg, var(--dark-brown) 0%, var(--brown) 100%);
+        color: var(--cream);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        border-bottom: 3px solid var(--rust);
+      }
+      
+      table.data td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--light-brown);
+        color: var(--ink);
+      }
+      
+      table.data tr:hover {
+        background: var(--notebook-beige);
+      }
+      
+      .footer {
+        text-align: center;
+        color: var(--dark-brown);
+        margin-top: 3rem;
+        padding: 1rem;
+        font-style: italic;
+      }
+      
+      @media (max-width: 768px) {
+        .header-card h1 { font-size: 1.8rem; }
+        .stat-value { font-size: 1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container px-3">
+      <!-- Header -->
+      <div class="header-card text-center">
+        <h1><i class="fas fa-chart-line"></i> Product Analytics Dashboard</h1>
+        <p class="mb-0">Real-time Amazon Product Scraping & Analysis</p>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row row g-3">
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card primary">
+            <div class="stat-icon"><i class="fas fa-box"></i></div>
+            <div class="stat-value">{{ total_products }}</div>
+            <div class="stat-label">Total Products</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card secondary">
+            <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+            <div class="stat-value">₹{{ "%.0f"|format(avg_price) }}</div>
+            <div class="stat-label">Average Price</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card danger">
+            <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+            <div class="stat-value">₹{{ "%.0f"|format(max_price) }}</div>
+            <div class="stat-label">Highest Price</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card warning">
+            <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+            <div class="stat-value">₹{{ "%.0f"|format(min_price) }}</div>
+            <div class="stat-label">Lowest Price</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="row g-3 mb-3">
+        <div class="col-lg-8">
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-bar"></i> Average Price by Category</h3>
+            {% if plot_url_bar %}
+            <img src="data:image/png;base64,{{ plot_url_bar }}" alt="Price by Category" />
+            {% else %}
+            <div class="text-muted text-center py-5">No data available</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-pie"></i> Category Distribution</h3>
+            {% if plot_url_pie %}
+            <img src="data:image/png;base64,{{ plot_url_pie }}" alt="Category Distribution" />
+            {% else %}
+            <div class="text-muted text-center py-5">No data available</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="row g-3 mb-3">
+        <div class="col-12">
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-area"></i> Price Distribution</h3>
+            {% if plot_url_dist %}
+            <img src="data:image/png;base64,{{ plot_url_dist }}" alt="Price Distribution" />
+            {% else %}
+            <div class="text-muted text-center py-5">No data available</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="table-card">
+        <h3 class="mb-3"><i class="fas fa-table"></i> Latest Products (Top 50)</h3>
+        {% if table %}
+        {{ table | safe }}
+        {% else %}
+        <div class="text-muted text-center py-5">No products to display. Run the scraper first.</div>
+        {% endif %}
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p><i class="fas fa-robot"></i> Powered by Web Scraper | Last updated: {{ "now"|default("N/A") }}</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
