@@ -29,7 +29,7 @@ A Python web scraping application that collects product data from Amazon India a
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/mohar-xe/Amazon-product-scraper.git
 cd web_scraper
 ```
 
